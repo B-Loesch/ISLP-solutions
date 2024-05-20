@@ -1,0 +1,168 @@
+---
+title: "Introduction to Statistical Learning Chapter 2 Exercises"
+author: "B-Loesch"
+format: pdf
+number-sections: true
+---
+
+## For each of parts (a) through (d), indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible method. Justify your answer.
+
+- (a) The sample size n is extremely large, and the number of predictors p is small.
+
+___Better___: With a large sample size, flexible methods can capture complex relationships without overfitting.
+
+- (b) The number of predictors p is extremely large, and the number of observations n is small.
+
+___Worse___, With a large number of predictors, flexible methods are prone to overfitting.
+
+- (c) The relationship between the predictors and response is highly non-linear.
+
+___Better___, Flexible methods are designed to capture complex relationships between predictors and the response variable.
+
+- (d) The variance of the error terms, i.e. $\sigma^{2} = \text{Var}(\epsilon)$, is extremely high.
+
+___Worse___, High variance in the error implies that there is a lot of noise in the data. Flexible methods can be significantly affected by this noise.
+
+## Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide *n* and *p*. 
+
+- (a)  We collect a set of data on the top 500 firms in the US. For each firm we record proft, number of employees, industry and the CEO salary. We are interested in understanding which factors afect CEO salary.
+
+___Regression___ - The response in this case is quantitative.
+___Inference___ - We are interested in understanding how the predictors impact the response (salary). 
+*n* = 500, *p* = profit, number of employees, and industry
+
+- (b) We are considering launching a new product and wish to know whether it will be a *success* or a *failure*. We collect data on 20 similar products that were previously launched. For each product we have recorded whether it was a success or failure, price charged for the product, marketing budget, competition price, and ten other variables.
+
+___Classification___ - The response is a binary value.
+___Prediction___ - We are only interested in the results and not how each predictor impacts the success.
+*n* = 20, and *p* = price, budget, competition price, 10 others.
+
+- (c) We are interested in predicting the % change in the USD/EURO exchange rate in relation to the weekly changes in the world stock markets. Hence we collect weekly data for all of 2012. For each week we record the % change in the USD/Euro, the % change in the US market, the % change in the British market, and the % change in the German market.
+
+___Regression___ - The response in this case is quantitative.
+___Prediction___ - We only want to predict the response.
+*n* = 52, and *p* = % change in US/British/German market.
+
+## We now revisit the bias-variance decomposition.
+
+- (a) Provide a sketch of typical (squared) bias, variance, training error, test error, and Bayes (or irreducible) error curves, on a single plot, as we go from less flexible statistical learning methods towards more flexible approaches. The x-axis should represent the values for each curve. There should be five curves. Make sure to label each one.
+
+```{python}
+#| echo: False
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0, 10, 0.5)
+
+plt.figure(figsize = (10, 8))
+plt.plot(x, .002*(-x+10)**3, label = 'squared bias')
+plt.plot(x, .002*x**3, label= 'variance')
+plt.plot(x, 2.38936 - 0.825077*x + 0.176655*x**2 - 0.0182319*x**3 + 0.00067091*x**4, label='training error')
+plt.plot(x, 3 - 0.5*x + .05*x**2, label='test error')
+plt.plot(x, x + 1 - x, label='Bayes error')
+plt.legend(loc='upper center')
+plt.ylabel('Error')
+plt.xlabel('model flexibility')
+plt.show()
+```
+
+- (b) Explain why each of the five curves has the shape displayed in part (a)
+
+Squared bias - Bias is reduced as flexbility increases.
+
+Variance - More complex models are more sensitive to new/different data being introduced. The model may be fitted to random noise only introduced by the training data and thus not generalizing to test data. 
+
+Training error - As the model gets more complex, the tighter it can be fit to the training data.
+
+Test error - The expected test error is the sum of Variance, Bias and Bayes (or random error). This shape represents the bias-variance trade-off.
+
+Bayes error - This term is constant by definition because it doesn't depend on the flexibility of the model.
+
+## You will now think of some real-life application for statistical learning.
+
+- (a) Describe three real-life applications in which classifcation might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+1. Determining whether a baseball team will win or lose a game. Response would be win or loss. Predictors could be starting pitchers' ERA, starting hitters' OPS+, home or away, and current standings. Depending on the analyst it could be inference or prediction, perhaps the front office would be interested in which predictors should be invested more heavily in while a better would only be interested in the results.
+2. Determining whether a certain medicine will work on a patient. Response would be success/cured or not. Predictors could be symptoms, blood test results etc. This would be prediction.
+3. Determining whether a written symbol represents a letter/number. Response would be the letter/number. Predictors would be an image. This would also  be prediction.
+
+- (b) Describe three real-life applications in which regression might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+1. Determining the traffic demand during any random time. Response would be the number of vehicles. Predictors would be past number of vehicles, day of the week, time of day, weather, etc. This would be prediction.
+2. Determining the test scores of students on a standardized exam. Response would be the score. Predictors could be ZIP code, parents' education levels, gender, race/ethnicity etc. This would be inference.
+3. Determining the amount of product sold. Response would be the amount of product sold. Predictors could be advertisment $ spent, comparison of similar products, price etc. This would be inference.
+
+- (c)  Describe three real-life applications in which cluster analysis might be useful.
+1. Clustering national parks into groups based on number of guests throughout the year to assign park workers by season. Some parks may see higher traffic during Spring/Summer while other may see high traffic all year.
+2. Clustering for recommendations to use on various streaming services. Given a list of movies/TV shows someone watches, a list of new content can be provided.
+3. Clustering types of ships into different types based on standard characteristics like length and depth. This could be useful for quantifying fuel burn/emissions when the type is unknown.
+
+## What are the advantages and disadvantages of very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?
+
+Very flexible models are capable of capturing complex patterns (i.e. nonlinear) in a dataset, which are generally present in real-life examples. But this makes them very prone to overfitting the random noise of a training data set which results in higher test MSE. 
+
+A more flexible approach might be preferred when we are interested more in prediction than inference. The opposite is true for a less flexible method, this is because simpler models are easier to interpret. 
+
+## Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a parametric approach to regression or classication (as opposed to a non-parametric approach)? What are its disadvantages?
+
+___Parametric___: First, makes an assumption about the functional form of f (linear vs nonlinear). Second, finds a procedure that uses training data to fit or train the model. This reduces the problem of estimating f down to one of estimating a set of parameters rather than the overall form of the data. The inital assumption generally doesn't match the unknown form and thus will be more innacurate. 
+
+___Non-Parametric___: Does not make any assumptions about the form of f, and estimates f as close as possible to the actual data. This could potentially be much more accurate because it is more flexible. But this does require a large amount of observation to make an accurate estimate.
+
+## The table below provides a training data set containing six observations, three predictors, and one qualitative response variable. Suppose we wish to use this data set to make a prediction for Y when $X_1 = X_2 = X_3$ = 0 using *K*-nearest neighbors. 
+
+$\begin{array}{|c|c|c|c|c|}
+\hline
+\text{Obs.} & \text{X1} & \text{X2} & \text{X3} & \text{Y} \\
+\hline
+1 & 0 & 3 & 0 & \text{Red} \\
+2 & 2 & 0 & 0 & \text{Red} \\
+3 & 0 & 1 & 3 & \text{Red} \\
+4 & 0 & 1 & 2 & \text{Green} \\
+5 & -1 & 0 & 1 & \text{Green} \\
+6 & 1 & 1 & 1 & \text{Red} \\
+\hline
+\end{array}$
+
+- (a) Compute the Euclidean distance between each observation and the test point, $X_1 = X_2 = X_3$ = 0.
+
+One can use $\sqrt{X_1^2 + X_2^2 + X_3^2} = distance$ to get:
+
+$\begin{array}{|c|c|c|c|c|c|}
+\hline
+\text{Obs.} & \text{X1} & \text{X2} & \text{X3} & \text{Distance(0,0,0)} & \text{Y} \\
+\hline
+1 & 0 & 3 & 0 & 3 & \text{Red} \\
+2 & 2 & 0 & 0 & 2 & \text{Red} \\
+3 & 0 & 1 & 3 & ~3.2 & \text{Red} \\
+4 & 0 & 1 & 2 & ~2.2 & \text{Green} \\
+5 & -1 & 0 & 1 & ~1.4 & \text{Green} \\
+6 & 1 & 1 & 1 & ~1,7 & \text{Red} \\
+\hline
+\end{array}$
+
+- (b) What is our prediction with K = 1? Why?
+
+___Green___, with K = 1 we are only using the closest neighbor to classify the point. The minimum distance is observation 5 so we choose green.
+
+- (c) What is our prediction with K = 3? Why?
+
+___Red___, with K = 3 we find the 3 closest neighbors in the data to classify the point. These are 2, 5, and 6 so a 2/3 probability of Red and 1/3 probability of Green. We choose the group with the highest probability - red.
+
+- (d) If the Bayes decision boundary in this problem is highly non-linear, then would we expect the *best* value for K to be large or small? Why?
+
+The best value for K in a highly non-linear scenario would be 1, which provides the highest flexibility. For classification problems (KNN), flexiblity is inversely proportional to K. 
+
+------------------------------------------------
+*Applied problems will not have their associated text within this document, please check the ISLP book to see what each problem is asking.*
+
+##
+```{python}
+#| echo: True
+```
+##
+```{python}
+#| echo: True
+```
+##
+```{python}
+#| echo: True
+```
