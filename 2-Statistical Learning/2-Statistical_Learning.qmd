@@ -3,6 +3,8 @@ title: "Introduction to Statistical Learning Chapter 2 Exercises"
 author: "B-Loesch"
 format: pdf
 number-sections: true
+execute: 
+  eval: true
 ---
 
 ## For each of parts (a) through (d), indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible method. Justify your answer.
@@ -156,13 +158,107 @@ The best value for K in a highly non-linear scenario would be 1, which provides 
 
 ##
 ```{python}
-#| echo: True
+#| echo: true
+#| output: true
+import pandas as pd
+import matplotlib.pyplot as plt
+college = pd.read_csv("D:/Brandon Loesch/ISLP-solutions/Data/College.csv")
+college.head()
+
+college2 = pd.read_csv("D:/Brandon Loesch/ISLP-solutions/Data/College.csv", index_col = 0)
+college2.head()
+
+college3 = college.rename({"Unnamed: 0": "College"}, axis = 1)
+college3 = college3.set_index("College")
+
+college = college3
+college.describe()
+
+pd.plotting.scatter_matrix(college[["Top10perc", "Apps", "Enroll"]])
+
+college.boxplot("Outstate", by = "Private")
+
+college["Elite"] = pd.cut(college["Top10perc"], bins = [0, 50, 100], labels = ["No", "Yes"])
+college["Elite"].value_counts()
+college.boxplot("Outstate", by = "Elite")
+
+fig = plt.figure()
+
+plt.subplot(221)
+college["Books"].plot.hist()
+plt.subplot(222)
+college["Room.Board"].plot.hist()
+plt.subplot(223)
+college["Personal"].plot.hist()
+plt.subplot(224)
+college["Outstate"].plot.hist()
+
+fig.subplots_adjust(hspace=1)
 ```
 ##
 ```{python}
-#| echo: True
+#| echo: true
+#| output: true
+import pandas as pd
+import matplotlib.pyplot as plt
+
+cars = pd.read_csv("D:/Brandon Loesch/ISLP-solutions/Data/Auto.csv")
+cars.isnull().sum(axis = 0)
+
+cars_quantitative = cars.select_dtypes(include = "number")
+cars_quantitative.max() - cars_quantitative.min()
+cars_quantitative.describe()
+
+cars_trim = cars.drop(index = range(10,85))
+cars_quantitative = cars_trim.select_dtypes(include = "number")
+cars_quantitative.describe()
+
+pd.plotting.scatter_matrix(cars)
 ```
+
+Displacement and weight visually seem reasonable to use as predictors for MPG. 
+
 ##
 ```{python}
-#| echo: True
+#| echo: true
+#| output: true
+import pandas as pd
+import matplotlib.pyplot as plt
+
+Boston = pd.read_csv("D:/Brandon Loesch/ISLP-solutions/Data/Boston.csv", index_col = 0)
+
+print(f"The shape of the Boston data set is: {Boston.shape}\n")
+
+pd.plotting.scatter_matrix(Boston, figsize=(10,10))
+print("Correlation between all columns and crim, sorted:\n")
+print(Boston.corrwith(Boston["crim"]).sort_values())
+
+Boston.nlargest(10, "crim")
+print("\n")
+Boston.nlargest(10, "tax")
+print("\n")
+Boston.nlargest(10, "ptratio")
+
+print("Range across all columns:\n")
+print(Boston.max() - Boston.min())
+
+print("Number of suburbs bounding Charles River:\n")
+print(Boston["chas"].sum())
+
+CharlesRiver = Boston[Boston["chas"] == 1]
+print("Median ptration for suburbs bounding Charles River:\n")
+print(CharlesRiver["ptratio"].median())
+
+print("Lowest median value of owner-occupied homes and how that compares to all other suburbs:\n")
+print(Boston.nsmallest(1, "age"))
+
+print(Boston.max() - Boston.nsmallest(1, "age"))
+
+print("Number of houses with 7 and 8 rooms (8 is described below:)")
+print(len(Boston[Boston["rm"] > 7]))
+print(len(Boston[Boston["rm"] > 8]))
+
+Boston[Boston["rm"] > 8].describe()
 ```
+
+Houses with more than 8 rooms generally have a lower crime rate, lower indus, lower LSTAT, and almost double the median value.
