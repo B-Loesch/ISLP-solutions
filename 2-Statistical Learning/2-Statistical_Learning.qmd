@@ -1,13 +1,19 @@
 ---
 title: "Introduction to Statistical Learning Chapter 2 Exercises"
 author: "B-Loesch"
-format: pdf
+format: 
+    html:
+        theme: darkly
+        toc: true
+        toc-location: right
+        code-fold: true
 number-sections: true
 execute: 
   eval: true
 ---
 
-## For each of parts (a) through (d), indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible method. Justify your answer.
+## 
+__For each of parts (a) through (d), indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible method. Justify your answer.__
 
 -   
 
@@ -33,7 +39,8 @@ execute:
 
 ***Worse***, High variance in the error implies that there is a lot of noise in the data. Flexible methods can be significantly affected by this noise.
 
-## Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide *n* and *p*.
+## 
+__Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide *n* and *p*.__
 
 -   
 
@@ -53,14 +60,15 @@ execute:
 
 ***Regression*** - The response in this case is quantitative. ***Prediction*** - We only want to predict the response. *n* = 52, and *p* = % change in US/British/German market.
 
-## We now revisit the bias-variance decomposition.
+## 
+__We now revisit the bias-variance decomposition.__
 
 -   
 
     (a) Provide a sketch of typical (squared) bias, variance, training error, test error, and Bayes (or irreducible) error curves, on a single plot, as we go from less flexible statistical learning methods towards more flexible approaches. The x-axis should represent the values for each curve. There should be five curves. Make sure to label each one.
 
 ```{python}
-#| echo: False
+#| echo: True
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -92,7 +100,8 @@ Test error - The expected test error is the sum of Variance, Bias and Bayes (or 
 
 Bayes error - This term is constant by definition because it doesn't depend on the flexibility of the model.
 
-## You will now think of some real-life application for statistical learning.
+## 
+__You will now think of some real-life application for statistical learning.__
 
 -   
 
@@ -118,19 +127,22 @@ Bayes error - This term is constant by definition because it doesn't depend on t
 2.  Clustering for recommendations to use on various streaming services. Given a list of movies/TV shows someone watches, a list of new content can be provided.
 3.  Clustering types of ships into different types based on standard characteristics like length and depth. This could be useful for quantifying fuel burn/emissions when the type is unknown.
 
-## What are the advantages and disadvantages of very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?
+## 
+__What are the advantages and disadvantages of very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?__
 
 Very flexible models are capable of capturing complex patterns (i.e. nonlinear) in a dataset, which are generally present in real-life examples. But this makes them very prone to overfitting the random noise of a training data set which results in higher test MSE.
 
 A more flexible approach might be preferred when we are interested more in prediction than inference. The opposite is true for a less flexible method, this is because simpler models are easier to interpret.
 
-## Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a parametric approach to regression or classification (as opposed to a non-parametric approach)? What are its disadvantages?
+## 
+__Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a parametric approach to regression or classification (as opposed to a non-parametric approach)? What are its disadvantages?__
 
 ***Parametric***: First, makes an assumption about the functional form of f (linear vs nonlinear). Second, finds a procedure that uses training data to fit or train the model. This reduces the problem of estimating f down to one of estimating a set of parameters rather than the overall form of the data. The initial assumption generally doesn't match the unknown form and thus will be more inaccurate.
 
 ***Non-Parametric***: Does not make any assumptions about the form of f, and estimates f as close as possible to the actual data. This could potentially be much more accurate because it is more flexible. But this does require a large amount of observation to make an accurate estimate.
 
-## The table below provides a training data set containing six observations, three predictors, and one qualitative response variable. Suppose we wish to use this data set to make a prediction for Y when $X_1 = X_2 = X_3$ = 0 using *K*-nearest neighbors.
+## 
+__The table below provides a training data set containing six observations, three predictors, and one qualitative response variable. Suppose we wish to use this data set to make a prediction for Y when $X_1 = X_2 = X_3$ = 0 using *K*-nearest neighbors.__
 
 $\begin{array}{|c|c|c|c|c|}
 \hline
@@ -229,8 +241,7 @@ fig.subplots_adjust(hspace=1)
 
 ## 
 
-```         
-{python}
+```         {python}
 #| echo: true
 #| output: true
 import pandas as pd

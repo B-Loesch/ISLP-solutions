@@ -1,2 +1,6 @@
 2-Statistical Learning/venv/*
 /Data
+*.png
+*.css
+*.woff
+*.js
